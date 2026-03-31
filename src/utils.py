@@ -1,5 +1,4 @@
 import numpy as np
-from collections import OrderedDict
 
 
 def normalize(min_old: int, max_old: int, min_new: int, max_new: int, val: np.ndarray) -> np.ndarray:
@@ -27,13 +26,12 @@ def histogram(data: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 	Returns: histogram, bins.
 	'''
 
-	pixels, count = np.unique(data, return_counts=True)
-	hist = OrderedDict()
+	counts = np.bincount(data.ravel(), minlength=256)
+	nonzero_mask = counts > 0
+	bins = np.where(nonzero_mask)[0]
+	hist = counts[bins]
 
-	for i in range(len(pixels)):
-		hist[pixels[i]] = count[i]
-
-	return np.array(list(hist.values())), np.array(list(hist.keys()))
+	return hist, bins
 
 
 def to_grayscale(image: np.ndarray) -> np.ndarray:
