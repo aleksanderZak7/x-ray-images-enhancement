@@ -13,7 +13,7 @@ class CLAHE(BaseAlgorithm):
 	N-CLAHE the normalization is done using a log function, instead of a linear one, as we use here.
 	"""
 
-	__slots__ = ("_n_iter", "_clip_limit", "_window_size", "_result_path", "_log")
+	__slots__ = ("_log", "_n_iter", "_clip_limit", "_window_size", "_result_path")
 
 	def __init__(self, result_path: Path, window_size: int | None, clip_limit: int | None, n_iter: int | None, log: bool = False) -> None:
 		if window_size is None or clip_limit is None or n_iter is None:
@@ -24,7 +24,8 @@ class CLAHE(BaseAlgorithm):
 		self._clip_limit: int = clip_limit
 		self._window_size: int = window_size
 		self._result_path: Path = result_path / "clahe_log"
-		self._result_path.mkdir(parents=True, exist_ok=True)
+		if self._log:
+			self._result_path.mkdir(parents=True, exist_ok=True)
 
 
 	def run(self, image: np.ndarray) -> np.ndarray:
@@ -58,7 +59,8 @@ class CLAHE(BaseAlgorithm):
 		padded_equalized_image: np.ndarray = np.zeros(shape).astype(np.uint8)
 
 		for i in range(border, shape[0] - border):
-			print(f"Line: {i}", end='\r', flush=True)
+			if self._log:
+				print(f"Line: {i}", end='\r', flush=True)
 			for j in range(border, shape[1] - border):
 				# Region to extract the histogram
 				region: np.ndarray = padded_image[i-border:i+border+1, j-border:j+border+1]
@@ -79,7 +81,8 @@ class CLAHE(BaseAlgorithm):
 				# Changing the value of the image to the result from the CDF for the given pixel
 				padded_equalized_image[i][j] = cdf[padded_image[i][j]]
 
-		print()
+		if self._log:
+			print()
 		# Removing the padding from the image
 		return padded_equalized_image[border:shape[0] - border, border:shape[1] - border].astype(np.uint8)
 
