@@ -1,8 +1,8 @@
 import numpy as np
+from collections import OrderedDict
 
-from collections import OrderedDict, defaultdict
 
-def normalize(min_old, max_old, min_new, max_new, val):
+def normalize(min_old: int, max_old: int, min_new: int, max_new: int, val: np.ndarray) -> np.ndarray:
 	'''Normalizes values to the interval [min_new, max_new]
 
 	Parameters:
@@ -17,7 +17,8 @@ def normalize(min_old, max_old, min_new, max_new, val):
 	normalized = (max_new - min_new) * ratio + min_new
 	return normalized.astype(np.uint8)
 
-def histogram(data):
+
+def histogram(data: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 	'''Generates the histogram for the given data.
 
 	Parameters:
@@ -34,7 +35,8 @@ def histogram(data):
 
 	return np.array(list(hist.values())), np.array(list(hist.keys()))
 
-def to_grayscale(image):
+
+def to_grayscale(image: np.ndarray) -> np.ndarray:
 	red_v = image[:, :, 0] * 0.299
 	green_v = image[:, :, 1] * 0.587
 	blue_v = image[:, :, 2] * 0.144
@@ -42,7 +44,8 @@ def to_grayscale(image):
 
 	return image.astype(np.uint8)
 
-def clip_histogram(hist, bins, clip_limit):
+
+def clip_histogram(hist: np.ndarray, bins: np.ndarray, clip_limit: int) -> np.ndarray:
 	'''Clips the given histogram.
 
 	Parameters:
@@ -74,7 +77,8 @@ def clip_histogram(hist, bins, clip_limit):
 
 	return hist
 
-def calculate_cdf(hist, bins):
+
+def calculate_cdf(hist: np.ndarray, bins: np.ndarray) -> dict[int, int]:
 	'''Calculates the normalized CDF (Cumulative Distribution Function)
 	for the histogram.
 
