@@ -1,18 +1,21 @@
+import numpy as np
 from abc import ABC, abstractmethod
 
+
 class BaseAlgorithm(ABC):
-	'''Class that must be inherited for each algorithm.'''
+	"""Class that must be inherited for each algorithm."""
 
 	@abstractmethod
-	def __init__(self, filename, results_path):
-		raise NotImplementedError
+	def run(self, image: np.ndarray) -> np.ndarray:
+		"""Runs the algorithm for the image.
 
-	@abstractmethod
-	def run(self):
-		'''Runs the algorithm, returning an image normalized to [0, 255].'''
-		raise NotImplementedError
+		Args:
+			image (np.ndarray): Input image to be processed.
 
-	@abstractmethod
-	def get_input(self):
-		'''Receives the input for the algorithm. It can be any variable, like window size in CLAHE.'''
+		Raises:
+			NotImplementedError: If the method is not implemented in the child class.
+
+		Returns:
+			np.ndarray: Processed image after applying the algorithm.
+		"""
 		raise NotImplementedError
