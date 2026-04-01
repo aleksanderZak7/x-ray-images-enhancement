@@ -22,8 +22,10 @@ class ArgumentHandler:
 		self._parser.add_argument("-a", "--algorithm", type=str, required=True, choices=["clahe", "um", "hef"], help="Algorithm to be used")
 
 		# Image processing options
-		self._parser.add_argument("--negate", action="store_true", help="Apply image negation before processing")
+		self._parser.add_argument("--rgb", action="store_true", help="Convert output images to RGB. Default is False")
 		self._parser.add_argument("--shape", type=int, default=None, help="Output shape for the processed images, e.g., 640")
+		self._parser.add_argument("--negate", action="store_true", help="Apply image negation before processing. Default is False")
+		self._parser.add_argument("--threads", type=int, default=1, help="Number of parallel workers for processing images. Default is 1")
 
 		# UM parameters
 		self._parser.add_argument("--filter-type", type=int, choices=[1, 2, 3, 4], default=None, help="[UM] Filter type (1=Gaussian, 2=Median, 3=Maximum, 4=Minimum)")
@@ -37,7 +39,7 @@ class ArgumentHandler:
 		self._parser.add_argument("--window-size", type=int, default=None, help="[CLAHE] Window size")
 		self._parser.add_argument("--clip-limit", type=int, default=None, help="[CLAHE] Clip limit")
 		self._parser.add_argument("--n-iter", type=int, default=None, help="[CLAHE] Number of iterations")
-		self._parser.add_argument("--log", action="store_true", help="[CLAHE] Enable logging intermediate results for debugging")
+		self._parser.add_argument("--log", action="store_true", help="[CLAHE] Enable logging intermediate results for debugging. Default is False")
 
 
 	@property
@@ -56,14 +58,24 @@ class ArgumentHandler:
 		return self._parsed_args["algorithm"]
 
 	@property
-	def get_negate(self) -> bool:
-		"""Returns whether image negation should be applied."""
-		return self._parsed_args["negate"]
+	def get_rgb(self) -> bool:
+		"""Returns whether output images should be converted to RGB."""
+		return self._parsed_args["rgb"]
 
 	@property
 	def get_shape(self) -> int | None:
 		"""Returns provided output shape for the processed images."""
 		return self._parsed_args["shape"]
+
+	@property
+	def get_negate(self) -> bool:
+		"""Returns whether image negation should be applied."""
+		return self._parsed_args["negate"]
+
+	@property
+	def get_workers(self) -> int:
+		"""Returns the number of parallel workers."""
+		return self._parsed_args["threads"]
 
 	@property
 	def get_params(self) -> dict[str, Any]:
