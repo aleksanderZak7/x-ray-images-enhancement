@@ -1,16 +1,62 @@
-# X-Ray Images Enhancement
+# X-Ray Bone Fracture Enhancement
 
-## Abstract
-The main objective of this project is to improve the visualization of fractured bones using three image enhancement algorithms: **contrast limited adaptive histogram equalization** (CLAHE), **unsharp masking** (UM) and  **high-frequency emphasis filtering** (HEF) After implementing these algorithms, we will discuss about the results and the difficulties found during the development of the project.
+## Overview
+This project implements and compares three digital image processing algorithms designed to enhance the visualization of bone fractures in X-ray imagery:
 
-## Example Image
+* UM: Unsharp Masking (Spatial Domain Sharpening).
+* CLAHE: Contrast Limited Adaptive Histogram Equalization.
+* HEF: High-Frequency Emphasis Filtering (Frequency Domain).
 
-![alt text](https://www.nsf.gov/news/mmg/media/images/pr05005xray1_f.jpg "Unprocessed image of a chest x-ray film")
-##### Courtesy: National Science Foundation
+## Features
+* Multi-Algorithm Support: Toggle between CLAHE, UM, and HEF via CLI.
+* Parallel Processing: Utilize multi-threading for batch image processing.
+* Flexible Pre-processing: Options for image negation, resizing, and RGB conversion.
+* Extensive Parameter Tuning: Granular control over filter types, radii, and clip limits.
 
-Unprocessed images of x-ray films, like this one of a chest, made by *Nikola Zivaljevic, M.D.* and found at the [National Sciente Foundation Multimedia Gallery](https://www.nsf.gov/news/mmg/mmg_disp.jsp?med_id=52110), will be used in this project.
+## Usage
+Ensure you have the required dependencies installed, then run app.py using the following syntax:
 
-## Images Source
+python app.py -i <input_path> -o <output_path> -a <algorithm_name> [options]
+
+### Argument Reference
+-i, --input        [Required] Path to input images.
+
+-o, --output       [Required] Path to export processed results.
+
+-a, --algorithm    [Required] Algorithm to be used {clahe, um, hef}.
+
+
+--threads          Number of parallel workers (Default: 1).
+
+--negate           Apply image negation before processing.
+
+--shape            Resize output (e.g., 640 for 640x640).
+
+--rgb              Convert output images to RGB.
+
+### Algorithm-Specific Options
+
+* Unsharp Masking (UM):
+
+--filter-type      1: Gaussian, 2: Median, 3: Max, 4: Min.
+
+--radius           Sigma value for the Gaussian filter.
+
+--amount           Intensity of the sharpening effect.
+
+* CLAHE:
+
+--window-size      Local neighborhood size.
+
+--clip-limit       Threshold for contrast limiting.
+
+--n-iter           Number of iterations for the algorithm.
+
+* High-Frequency Emphasis (HEF):
+
+--d0               Cut-off frequency (1–90).
+
+# Images Source
 
 Besides the first image (001.tif), found at the [National Sciente Foundation Multimedia Gallery](https://www.nsf.gov/news/mmg/mmg_disp.jsp?med_id=52110), all the other images used were founded at the [National Library of Medicine MedPix](https://medpix.nlm.nih.gov/home), a free open source database with over 59,000 indexed and curated images, organized, reviewed, approved, and curated free of charge for personal use and for local teaching at institutions.
 
